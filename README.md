@@ -36,3 +36,8 @@ This is django web app that is used to calculate price of
 
 - Run following command in project directory
   - `python3 manage.py runserver`
+
+### API Docs
+
+- link for the API Docs
+  - <https://bit.ly/3S41sS0>
