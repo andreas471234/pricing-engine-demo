@@ -1,0 +1,7 @@
+django==5.0.1
+mysqlclient==2.2.1
+mysql-connector-python==8.2.0
+django-simple-history==3.4.0
+djangorestframework==3.14.0
+django-sequences==2.9
+simplejson==3.19.2
