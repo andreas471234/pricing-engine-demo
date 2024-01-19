@@ -31,4 +31,3 @@ def request_pagination(query_params):
         page_size = 500
 
     return page, page_size
-

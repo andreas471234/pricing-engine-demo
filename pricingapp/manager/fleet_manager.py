@@ -1,12 +1,14 @@
+from django.core.paginator import Paginator
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+
 from api.serializers.fleet_serializers import FleetDataSerializer
-from rest_framework.status import (HTTP_201_CREATED, HTTP_400_BAD_REQUEST)
 from pricingapp.models import Fleet
 from services.base_manager import BaseManager
-from django.core.paginator import Paginator
 
 
 class FleetManager(BaseManager):
     def __init__(self):
+        super().__init__()
         self.errors = None
         self.error_code = None
 
@@ -16,7 +18,7 @@ class FleetManager(BaseManager):
             serializer.save()
             return HTTP_201_CREATED, serializer.data
         return HTTP_400_BAD_REQUEST, serializer.errors
-            
+
     @staticmethod
     def _get_fleet_queryset(query_params):
         filters = {
@@ -31,7 +33,7 @@ class FleetManager(BaseManager):
         return verification_queryset
 
     @classmethod
-    def get_fleet_list(cls, query_params={}, page=None, page_size=10):
+    def get_fleet_list(cls, query_params, page=None, page_size=10):
         fleet_queryset = cls._get_fleet_queryset(query_params)
 
         if page and page_size:
@@ -43,7 +45,7 @@ class FleetManager(BaseManager):
             total_count = len(fleet_queryset)
             num_pages = 1
             page = 1
-    
+
         data = FleetDataSerializer(fleet_queryset, many=True).data
         resp = {
             "data": data,

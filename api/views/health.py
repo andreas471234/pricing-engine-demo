@@ -1,5 +1,5 @@
 from django.http import HttpResponse
 
 
-def view(request):
+def view(_):
     return HttpResponse("OK")

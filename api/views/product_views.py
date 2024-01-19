@@ -1,11 +1,12 @@
 import logging
-from services.utils import request_query_params_to_dict, request_pagination
-from pricingapp.manager.product_manager import ProductManager
+
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 
+from pricingapp.manager.product_manager import ProductManager
+from services.utils import request_pagination, request_query_params_to_dict
 
 logger = logging.getLogger(__name__)
 

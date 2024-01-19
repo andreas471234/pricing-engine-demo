@@ -1,0 +1,11 @@
+{
+    "python.pythonPath": "/Users/bismo-mac/Works/pricing-engine-demo/venv/bin/python3",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintUseMinimalCheckers": false,
+    "python.linting.pylintArgs": [
+        "--load-plugins",
+        "pylint_django",
+        "--django-settings-module=pricingapp.settings"
+    ]
+}

@@ -1,24 +1,37 @@
 from django.db import models
-from pricingapp.models.product import ProductUnit
-
+from django.db.models import Q  # trunk-ignore(ruff/F401)
 from simple_history.models import HistoricalRecords
+
 from .common import SoftDeletionManager, SoftDeletionModel
-from django.db.models import Q
+
 
 class Fleet(SoftDeletionModel):
     FLEET_GROUND = "GROUND"
     FLEET_TYPE = (
-        (FLEET_GROUND, FLEET_GROUND,),
+        (
+            FLEET_GROUND,
+            FLEET_GROUND,
+        ),
     )
 
     code = models.CharField(
-        max_length=127, null=False, unique=True, db_index=True, help_text="Fleet unique code"
+        max_length=127,
+        null=False,
+        unique=True,
+        db_index=True,
+        help_text="Fleet unique code",
     )
     name = models.CharField(max_length=127, null=False, help_text="Fleet name")
     capacity = models.FloatField(null=False, help_text="Fleet max capacity")
     cost = models.JSONField(null=False, help_text="Fleet cost", default=dict)
-    type = models.CharField(max_length=127, choices=FLEET_TYPE, default=FLEET_GROUND, help_text="Fleet type")
-    pool = models.CharField(max_length=127, null=False, help_text="Fleet pool to calculate the shipping cost")
+    type = models.CharField(
+        max_length=127, choices=FLEET_TYPE, default=FLEET_GROUND, help_text="Fleet type"
+    )
+    pool = models.CharField(
+        max_length=127,
+        null=False,
+        help_text="Fleet pool to calculate the shipping cost",
+    )
     objects = SoftDeletionManager()
     history = HistoricalRecords()
 
@@ -55,18 +68,17 @@ class Fleet(SoftDeletionModel):
             "type": "Q(type__in={data})",
         }
 
-
         _filter_query = ""
         for filter_key, field_name in field_filter_map.items():
             data = filters.get(filter_key)
-            if data not in (None, list(), dict(), "", ['']):
+            if data not in (None, list(), dict(), "", [""]):
                 if _filter_query == "":
                     _filter_query += field_name.format(data=data)
                 else:
                     _filter_query += "&" + field_name.format(data=data)
 
         fleet_list = Fleet.objects.all()
-        if _filter_query != '':
+        if _filter_query != "":
             fleet_list = fleet_list.filter(eval(_filter_query))
 
         fleet_list = fleet_list.order_by("created_at").distinct()

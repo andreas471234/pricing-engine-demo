@@ -1,6 +1,6 @@
+import logging
 import uuid
 
-import logging
 from services.logging import ERROR, INFO, WARNING
 
 logger = logging.getLogger(__name__)

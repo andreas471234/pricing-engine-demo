@@ -15,10 +15,10 @@ class CommonModel(models.Model):
         abstract = True
 
     def __str__(self):
-        return "%s" % self.id
+        return "%s" % self.pk
 
     def __unicode__(self):
-        return "%s" % self.id
+        return "%s" % self.pk
 
 
 class SoftDeletionQuerySet(QuerySet):
@@ -62,7 +62,7 @@ class SoftDeletionModel(CommonModel):
     class Meta:
         abstract = True
 
-    def delete(self):
+    def delete(self, using=None, keep_parents=False):
         self.deleted_at = timezone.now()
         self.save()
 

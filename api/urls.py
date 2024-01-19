@@ -1,13 +1,12 @@
-from django.urls import re_path, include
-from api.views import customer_views
+from django.urls import include, re_path
 from rest_framework import routers
 
 from api.views import (
     customer_views,
-    supplier_views,
+    fleet_views,
     product_views,
     quote_views,
-    fleet_views,
+    supplier_views,
 )
 
 

@@ -1,13 +1,19 @@
-from api.serializers.customer_serializers import CreateQuoteSerializer, CustomerDataSerializer, CustomerDetailSerializer
+from django.core.paginator import Paginator
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+
+from api.serializers.customer_serializers import (
+    CreateQuoteSerializer,
+    CustomerDataSerializer,
+    CustomerDetailSerializer,
+)
 from pricingapp.manager.quote_manager import QuoteManager
-from rest_framework.status import (HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST)
 from pricingapp.models import Customer
 from services.base_manager import BaseManager
-from django.core.paginator import Paginator
 
 
 class CustomerManager(BaseManager):
-    def __init__(self, cust_obj = None):
+    def __init__(self, cust_obj=None):
+        super().__init__()
         self.cust_obj = cust_obj
         self.errors = None
         self.error_code = None
@@ -21,9 +27,9 @@ class CustomerManager(BaseManager):
 
     def get_detail(self):
         serializer = CustomerDetailSerializer(self.cust_obj)
-        
+
         return HTTP_200_OK, serializer.data
-    
+
     def get_quote_price(self, payload):
         serializer = CreateQuoteSerializer(data=payload)
         if serializer.is_valid():
@@ -32,22 +38,21 @@ class CustomerManager(BaseManager):
             status_code, resp = quote_manager.get_price(data)
 
             return status_code, resp
-        
+
         return HTTP_400_BAD_REQUEST, serializer.errors
-    
+
     def create_quote(self, payload):
         serializer = CreateQuoteSerializer(data=payload)
         if serializer.is_valid():
             data = serializer.data
             quote_manager = QuoteManager(cust_obj=self.cust_obj)
             status_code, resp = quote_manager.get_price(data)
-            status_code, resp = quote_manager.create_quote(data)
+            status_code, resp = quote_manager.create_quote()
 
             return status_code, resp
-        
+
         return HTTP_400_BAD_REQUEST, serializer.errors
-        
-            
+
     @staticmethod
     def _get_customer_queryset(query_params):
         filters = {
@@ -63,7 +68,7 @@ class CustomerManager(BaseManager):
         return verification_queryset
 
     @classmethod
-    def get_customer_list(cls, query_params={}, page=None, page_size=10):
+    def get_customer_list(cls, query_params, page=None, page_size=10):
         customer_queryset = cls._get_customer_queryset(query_params)
 
         if page and page_size:
@@ -75,7 +80,7 @@ class CustomerManager(BaseManager):
             total_count = len(customer_queryset)
             num_pages = 1
             page = 1
-    
+
         data = CustomerDataSerializer(customer_queryset, many=True).data
         resp = {
             "data": data,

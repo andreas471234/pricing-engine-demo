@@ -1,12 +1,17 @@
-from api.serializers.product_serializers import ProductDataSerializer, ProductUnitDataSerializer
-from rest_framework.status import (HTTP_201_CREATED, HTTP_400_BAD_REQUEST)
+from django.core.paginator import Paginator
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+
+from api.serializers.product_serializers import (
+    ProductDataSerializer,
+    ProductUnitDataSerializer,
+)
 from pricingapp.models import Product
 from services.base_manager import BaseManager
-from django.core.paginator import Paginator
 
 
 class ProductManager(BaseManager):
     def __init__(self):
+        super().__init__()
         self.errors = None
         self.error_code = None
 
@@ -16,14 +21,14 @@ class ProductManager(BaseManager):
             serializer.save()
             return HTTP_201_CREATED, serializer.data
         return HTTP_400_BAD_REQUEST, serializer.errors
-    
+
     def create_unit(self, payload):
         serializer = ProductUnitDataSerializer(data=payload)
         if serializer.is_valid():
             serializer.save()
             return HTTP_201_CREATED, serializer.data
         return HTTP_400_BAD_REQUEST, serializer.errors
-            
+
     @staticmethod
     def _get_product_queryset(query_params):
         filters = {
@@ -36,7 +41,7 @@ class ProductManager(BaseManager):
         return verification_queryset
 
     @classmethod
-    def get_product_list(cls, query_params={}, page=None, page_size=10):
+    def get_product_list(cls, query_params, page=None, page_size=10):
         product_queryset = cls._get_product_queryset(query_params)
 
         if page and page_size:
@@ -48,7 +53,7 @@ class ProductManager(BaseManager):
             total_count = len(product_queryset)
             num_pages = 1
             page = 1
-    
+
         data = ProductDataSerializer(product_queryset, many=True).data
         resp = {
             "data": data,
