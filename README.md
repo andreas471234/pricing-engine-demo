@@ -41,3 +41,8 @@ This is django web app that is used to calculate price of
 
 - link for the API Docs
   - <https://documenter.getpostman.com/view/32451372/2s9YsT68DW>
+
+### Database Diagram
+
+- link for database diagram
+  - <https://drive.google.com/file/d/1dEyRLxRiqTE7WmXLQl4Cz5EMTws9gMxc/view?usp=sharing>
