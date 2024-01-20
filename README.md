@@ -40,4 +40,4 @@ This is django web app that is used to calculate price of
 ### API Docs
 
 - link for the API Docs
-  - <https://bit.ly/3S41sS0>
+  - <https://documenter.getpostman.com/view/32451372/2s9YsT68DW>

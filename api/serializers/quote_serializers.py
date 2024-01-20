@@ -61,7 +61,6 @@ class QuoteItemDetailSerializer(serializers.ModelSerializer):
             "order_quantity",
             "status",
             "selling_price",
-            "shipping_price",
         )
 
     def get_supplier_code(self, obj):

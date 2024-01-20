@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from pricingapp.models.product import ProductUnit
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from api.serializers.product_serializers import (
@@ -18,7 +19,10 @@ class ProductManager(BaseManager):
     def create(self, payload):
         serializer = ProductDataSerializer(data=payload)
         if serializer.is_valid():
-            serializer.save()
+            product = serializer.save()
+            if not product.unit:
+                product.unit = ProductUnit.objects.first()
+                product.save()
             return HTTP_201_CREATED, serializer.data
         return HTTP_400_BAD_REQUEST, serializer.errors
 

@@ -30,13 +30,6 @@ class QuoteViewSet(viewsets.GenericViewSet):
 
         return Response(status=status, data=quote_data)
 
-    @action(methods=["get"], detail=True, url_path="pricedetail")
-    def price_detail(self, _, pk):
-        quote_obj = get_object_or_404(Quote, id=pk)
-        status, quote_data = QuoteManager(quote_obj=quote_obj).get_detail()
-
-        return Response(status=status, data=quote_data)
-
     @action(methods=["post"], detail=False, url_path="add-purchase-order")
     def add_purchase_order(self, request):
         cust_obj = get_object_or_404(Customer, code=request.data.get("customer_code"))

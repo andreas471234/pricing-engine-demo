@@ -12,12 +12,15 @@ class ProductDataSerializer(serializers.ModelSerializer):
             "id",
             "code",
             "name",
-            "market_price",
             "weight",
             "created_at",
             "product_unit_name",
+            "unit"
         )
         read_only_fields = ("id", "created_at")
+        extra_kwargs = {
+            "unit": {"write_only": True},
+        }
 
 
 class ProductUnitDataSerializer(serializers.ModelSerializer):

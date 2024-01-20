@@ -19,12 +19,6 @@ class Product(SoftDeletionModel):
         help_text="Product unique code",
     )
     name = models.CharField(max_length=127, null=False, help_text="Product name")
-    market_price = models.DecimalField(
-        default=0.0,
-        max_digits=25,
-        decimal_places=4,
-        help_text="Market price per unit of product",
-    )
     weight = models.FloatField(default=0, help_text="Weight of the product in kg")
     unit = models.ForeignKey(
         ProductUnit,

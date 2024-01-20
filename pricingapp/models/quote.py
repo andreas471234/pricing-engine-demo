@@ -171,11 +171,5 @@ class QuoteItem(SoftDeletionModel):
     selling_price = models.DecimalField(
         default=0.0, max_digits=25, decimal_places=4, help_text="Selling price per unit"
     )
-    shipping_price = models.DecimalField(
-        default=0.0,
-        max_digits=25,
-        decimal_places=4,
-        help_text="Shipping price of the item",
-    )
     objects = SoftDeletionManager()
     history = HistoricalRecords()
